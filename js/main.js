@@ -59,20 +59,29 @@ var addPhotos = function () {
 addPhotos();
 
 
-var OtherUser = document.querySelector('.pictures');
+var picturesContainer = document.querySelector('.pictures');
+var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-var similarUserTemplate = document.querySelector('#picture')
-    .content
-    .querySelector('.picture');
 
-for (var i = 0; i < PHOTO; i++) {
-  var userPhoto = similarUserTemplate.cloneNode(true);
+var getPictureElement = function (photos) {
+  var pictureElement = pictureTemplate.cloneNode(true);
 
-  userPhoto.querySelector('.picture__img').src = addPhotos.url;
-  userPhoto.querySelector('.picture__likes').textContent = addPhotos.likes;
-  userPhoto.querySelector('.picture__comments').textContent = addPhotos.comments;
+  pictureElement.querySelector('.picture__img').src = photos.url;
+  pictureElement.querySelector('.picture__likes').textContent = photos.likes;
+  pictureElement.querySelector('.picture__comments').textContent = photos.comments.length;
 
-  OtherUser.appendChild(userPhoto);
-}
+  return pictureElement;
+};
 
-console.log(photos);
+
+var renderPictures = function () {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < photos.length; i++) {
+    fragment.appendChild(getPictureElement(photos[i]));
+  }
+
+  picturesContainer.appendChild(fragment);
+};
+
+renderPictures();
