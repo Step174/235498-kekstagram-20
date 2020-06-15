@@ -85,3 +85,15 @@ var renderPictures = function () {
 };
 
 renderPictures();
+
+
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+var getBigPicture = function (pic) {
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src = pic.url;
+  bigPicture.querySelector('.likes-count').textContent = pic.likes;
+  bigPicture.querySelector('.comments-count').textContent = pic.comments.length;
+};
+
+getBigPicture(photos[0]);
