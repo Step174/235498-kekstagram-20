@@ -88,6 +88,7 @@ renderPictures();
 
 
 var bigPicture = document.querySelector('.big-picture');
+
 bigPicture.classList.remove('hidden');
 
 var getBigPicture = function (pic) {
@@ -97,3 +98,38 @@ var getBigPicture = function (pic) {
 };
 
 getBigPicture(photos[0]);
+
+var commentsContainer = bigPicture.querySelector('.social__comments');
+
+var createComment = function (comments) {
+  var commentElement = document.createElement('li');
+  var userIconElement = document.createElement('img');
+  var commentText = document.createElement('p');
+
+  commentElement.classList.add('social__comment');
+
+  userIconElement.classList.add('social__picture');
+  userIconElement.src = comments.avatar;
+  userIconElement.alt = comments.name;
+
+  commentText.classList.add('social__text');
+  commentText.textContent = comments.message;
+
+  commentElement.appendChild(userIconElement);
+  commentElement.appendChild(commentText);
+
+  return commentElement;
+};
+
+
+var addComment = function () {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < comments.length; i++) {
+    fragment.appendChild(createComment(comments[i]));
+  }
+
+  commentsContainer.appendChild(fragment);
+};
+
+addComment();
