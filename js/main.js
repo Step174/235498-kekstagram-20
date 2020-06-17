@@ -94,17 +94,9 @@ var bigPicture = document.querySelector('.big-picture');
 
 bigPicture.classList.remove('hidden');
 
-var getBigPicture = function (pic) {
-  bigPicture.querySelector('.big-picture__img').querySelector('img').src = pic.url;
-  bigPicture.querySelector('.likes-count').textContent = pic.likes;
-  bigPicture.querySelector('.comments-count').textContent = pic.comments.length;
-};
-
-getBigPicture(photos[0]);
-
 var commentsContainer = bigPicture.querySelector('.social__comments');
 
-var createComment = function (comm) {
+var createComment = function (comment) {
   var commentElement = document.createElement('li');
   var userIconElement = document.createElement('img');
   var commentText = document.createElement('p');
@@ -112,13 +104,13 @@ var createComment = function (comm) {
   commentElement.classList.add('social__comment');
 
   userIconElement.classList.add('social__picture');
-  userIconElement.src = comm.avatar;
-  userIconElement.alt = comm.name;
+  userIconElement.src = comment.avatar;
+  userIconElement.alt = comment.name;
   userIconElement.width = USER_ICON_WIDTH;
   userIconElement.height = USER_ICON_HEIGHT;
 
   commentText.classList.add('social__text');
-  commentText.textContent = comm.message;
+  commentText.textContent = comment.message;
 
   commentElement.appendChild(userIconElement);
   commentElement.appendChild(commentText);
@@ -126,18 +118,25 @@ var createComment = function (comm) {
   return commentElement;
 };
 
-
-var addComment = function () {
+var addComment = function (comments) {
   var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < photos.length; i++) {
-    fragment.appendChild(createComment(photos[i]));
+  for (var i = 0; i < comments.length; i++) {
+    fragment.appendChild(createComment(comments[i]));
   }
 
   commentsContainer.appendChild(fragment);
 };
 
-addComment();
+var getBigPicture = function (pic) {
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src = pic.url;
+  bigPicture.querySelector('.likes-count').textContent = pic.likes;
+  bigPicture.querySelector('.comments-count').textContent = pic.comments.length;
+
+  addComment(pic.comments);
+};
+
+getBigPicture(photos[0]);
 
 
 var commentCount = document.querySelector('.social__comment-count');
