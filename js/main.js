@@ -4,6 +4,9 @@ var PHOTO = 25;
 var MAX_COMMENT = 8;
 var MESSAGES = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 var NAMES = ['Артём', 'Ворсонофий', 'Клавдия', 'Василиск'];
+var USER_ICON_WIDTH = 35;
+var USER_ICON_HEIGHT = 35;
+
 
 var Likes = {
   MIN: 15,
@@ -85,3 +88,62 @@ var renderPictures = function () {
 };
 
 renderPictures();
+
+
+var bigPicture = document.querySelector('.big-picture');
+
+bigPicture.classList.remove('hidden');
+
+var commentsContainer = bigPicture.querySelector('.social__comments');
+
+var createComment = function (comment) {
+  var commentElement = document.createElement('li');
+  var userIconElement = document.createElement('img');
+  var commentText = document.createElement('p');
+
+  commentElement.classList.add('social__comment');
+
+  userIconElement.classList.add('social__picture');
+  userIconElement.src = comment.avatar;
+  userIconElement.alt = comment.name;
+  userIconElement.width = USER_ICON_WIDTH;
+  userIconElement.height = USER_ICON_HEIGHT;
+
+  commentText.classList.add('social__text');
+  commentText.textContent = comment.message;
+
+  commentElement.appendChild(userIconElement);
+  commentElement.appendChild(commentText);
+
+  return commentElement;
+};
+
+var addComment = function (comments) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < comments.length; i++) {
+    fragment.appendChild(createComment(comments[i]));
+  }
+
+  commentsContainer.appendChild(fragment);
+};
+
+var getBigPicture = function (pic) {
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src = pic.url;
+  bigPicture.querySelector('.likes-count').textContent = pic.likes;
+  bigPicture.querySelector('.comments-count').textContent = pic.comments.length;
+
+  addComment(pic.comments);
+};
+
+getBigPicture(photos[0]);
+
+
+var commentCount = document.querySelector('.social__comment-count');
+commentCount.classList.add('hidden');
+
+var commentsLoader = document.querySelector('.comments-loader');
+commentsLoader.classList.add('hidden');
+
+var body = document.querySelector('body');
+body.classList.add('modal-open');
